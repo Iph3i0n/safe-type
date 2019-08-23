@@ -1,5 +1,5 @@
 {
-  "name": "safe-type",
+  "name": "@paulpopat/safe-type",
   "version": "1.0.0",
   "description": "JavaScript type safety with inference",
   "scripts": {
