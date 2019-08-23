@@ -1,0 +1,29 @@
+{
+  "name": "safe-type",
+  "version": "1.0.0",
+  "description": "JavaScript type safety with inference",
+  "scripts": {
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PaulPopat/safe-type.git"
+  },
+  "author": "Paul Popat",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/PaulPopat/safe-type/issues"
+  },
+  "homepage": "https://github.com/PaulPopat/safe-type#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "typescript": "^3.3.3"
+  }
+}
