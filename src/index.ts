@@ -32,7 +32,7 @@ export function IsFunction(arg: any): arg is Function {
 }
 
 export function IsDate(arg: any): arg is Date {
-  return arg instanceof IsDate;
+  return arg instanceof Date;
 }
 
 export function IsLiteral<T extends string | number | boolean>(
