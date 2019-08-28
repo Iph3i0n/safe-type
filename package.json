@@ -1,6 +1,6 @@
 {
   "name": "@paulpopat/safe-type",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JavaScript type safety with inference",
   "main": "lib/index.js",
   "scripts": {
