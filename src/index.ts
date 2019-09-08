@@ -58,58 +58,58 @@ export function IsArray<T>(checker: Checker<T>): Checker<T[]> {
   };
 }
 
-export function IsDiscriminated<T1>(c1: Checker<T1>): Checker<T1>;
-export function IsDiscriminated<T1, T2>(
-  c1: Checker<T1>,
-  c2: Checker<T2>
-): Checker<T1 | T2>;
-export function IsDiscriminated<T1, T2, T3>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>
-): Checker<T1 | T2 | T3>;
-export function IsDiscriminated<T1, T2, T3, T4>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>
-): Checker<T1 | T2 | T3 | T4>;
-export function IsDiscriminated<T1, T2, T3, T4, T5>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>,
-  c5: Checker<T5>
-): Checker<T1 | T2 | T3 | T4 | T5>;
-export function IsDiscriminated(...checkers: Checker<any>[]): Checker<any> {
-  return (arg): arg is IsType<typeof checkers[number]> =>
-    checkers.filter(c => c(arg, true)).length > 0;
-}
-
 export function IsUnion<T1>(c1: Checker<T1>): Checker<T1>;
 export function IsUnion<T1, T2>(
   c1: Checker<T1>,
   c2: Checker<T2>
-): Checker<T1 & T2>;
+): Checker<T1 | T2>;
 export function IsUnion<T1, T2, T3>(
   c1: Checker<T1>,
   c2: Checker<T2>,
   c3: Checker<T3>
-): Checker<T1 & T2 & T3>;
+): Checker<T1 | T2 | T3>;
 export function IsUnion<T1, T2, T3, T4>(
   c1: Checker<T1>,
   c2: Checker<T2>,
   c3: Checker<T3>,
   c4: Checker<T4>
-): Checker<T1 & T2 & T3 & T4>;
+): Checker<T1 | T2 | T3 | T4>;
 export function IsUnion<T1, T2, T3, T4, T5>(
   c1: Checker<T1>,
   c2: Checker<T2>,
   c3: Checker<T3>,
   c4: Checker<T4>,
   c5: Checker<T5>
-): Checker<T1 & T2 & T3 & T4 & T5>;
+): Checker<T1 | T2 | T3 | T4 | T5>;
 export function IsUnion(...checkers: Checker<any>[]): Checker<any> {
+  return (arg): arg is IsType<typeof checkers[number]> =>
+    checkers.filter(c => c(arg, true)).length > 0;
+}
+
+export function IsIntersection<T1>(c1: Checker<T1>): Checker<T1>;
+export function IsIntersection<T1, T2>(
+  c1: Checker<T1>,
+  c2: Checker<T2>
+): Checker<T1 & T2>;
+export function IsIntersection<T1, T2, T3>(
+  c1: Checker<T1>,
+  c2: Checker<T2>,
+  c3: Checker<T3>
+): Checker<T1 & T2 & T3>;
+export function IsIntersection<T1, T2, T3, T4>(
+  c1: Checker<T1>,
+  c2: Checker<T2>,
+  c3: Checker<T3>,
+  c4: Checker<T4>
+): Checker<T1 & T2 & T3 & T4>;
+export function IsIntersection<T1, T2, T3, T4, T5>(
+  c1: Checker<T1>,
+  c2: Checker<T2>,
+  c3: Checker<T3>,
+  c4: Checker<T4>,
+  c5: Checker<T5>
+): Checker<T1 & T2 & T3 & T4 & T5>;
+export function IsIntersection(...checkers: Checker<any>[]): Checker<any> {
   return (arg): arg is IsType<typeof checkers[number]> =>
     checkers.filter(c => c(arg, false)).length === checkers.length;
 }
@@ -147,7 +147,7 @@ export function IsObject<T extends CheckerObject>(
 export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
   return (arg: any): arg is { [key: string]: T } => {
     for (const key in arg) {
-      if (arg.hasOwnProperty(key)) {
+      if (!arg.hasOwnProperty(key)) {
         continue;
       }
 

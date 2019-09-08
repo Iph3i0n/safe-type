@@ -7,9 +7,9 @@ import {
   IsDate,
   IsLiteral,
   IsArray,
-  IsDiscriminated,
-  IsObject,
   IsUnion,
+  IsObject,
+  IsIntersection,
   IsDictionary,
   Optional,
   DoNotCare
@@ -27,20 +27,20 @@ it.each([
   ["IsArray of numbers", [1, 2, 3, 4], IsArray(IsNumber)],
   ["IsArray of strings", ["1", "2"], IsArray(IsString)],
   [
-    "IsLiteral of Test or 123 p1",
+    "IsUnion of Test or 123 p1",
     "Test",
-    IsDiscriminated(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123))
   ],
   [
-    "IsLiteral of Test or 123 p2",
+    "IsUnion of Test or 123 p2",
     123,
-    IsDiscriminated(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123))
   ],
   ["IsObject with number", { test: 123 }, IsObject({ test: IsNumber })],
   [
-    "IsUnion",
+    "IsIntersection",
     { test: 123, other: "test" },
-    IsUnion(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
+    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
   ],
   [
     "IsDictionary of numbers",
@@ -54,5 +54,48 @@ it.each([
   "Correctly assignes to true for %s",
   (name: string, data: any, checker: any) => {
     expect(checker(data)).toBe(true);
+  }
+);
+
+it.each([
+  ["IsString", 123 as any, IsString as any],
+  ["IsNumber", "test string", IsNumber],
+  ["IsSymbol", 123, IsSymbol],
+  ["IsBoolean", 123, IsBoolean],
+  ["IsFunction", 123, IsFunction],
+  ["IsDate", 123, IsDate],
+  ["IsLiteral", "No Literal", IsLiteral("Literal")],
+  ["IsArray of numbers", ["1", "2"], IsArray(IsNumber)],
+  ["IsArray of strings", [1, 2, 3, 4], IsArray(IsString)],
+  [
+    "IsUnion of Test or 123 p1",
+    "Not a test",
+    IsUnion(IsLiteral("Test"), IsLiteral(123))
+  ],
+  [
+    "IsUnion of Test or 123 p2",
+    321,
+    IsUnion(IsLiteral("Test"), IsLiteral(123))
+  ],
+  [
+    "IsObject with number",
+    { test: "test string" },
+    IsObject({ test: IsNumber })
+  ],
+  [
+    "IsIntersection",
+    { test: "test string", other: 123 },
+    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
+  ],
+  [
+    "IsDictionary of numbers",
+    { test: "123", other: 321 },
+    IsDictionary(IsNumber)
+  ],
+  ["Optional", false, Optional(IsNumber)]
+])(
+  "Correctly assignes to false for %s",
+  (name: string, data: any, checker: any) => {
+    expect(checker(data)).toBe(false);
   }
 );
