@@ -43,6 +43,11 @@ it.each([
     IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
   ],
   [
+    "IsIntersection with dictionary",
+    { test: 123, other: "test" },
+    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString }))
+  ],
+  [
     "IsDictionary of numbers",
     { test: 123, other: 321 },
     IsDictionary(IsNumber)
@@ -86,6 +91,11 @@ it.each([
     "IsIntersection",
     { test: "test string", other: 123 },
     IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
+  ],
+  [
+    "IsIntersection with dictionary",
+    { other: "test" },
+    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString }))
   ],
   [
     "IsDictionary of numbers",

@@ -145,7 +145,8 @@ export function IsObject<T extends CheckerObject>(
 }
 
 export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
-  return (arg: any): arg is { [key: string]: T } => {
+  return (arg: any, strict: boolean = true): arg is { [key: string]: T } => {
+    let anyMatch = false;
     for (const key in arg) {
       if (!arg.hasOwnProperty(key)) {
         continue;
@@ -156,11 +157,17 @@ export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
       }
 
       if (!c(arg[key], true)) {
-        return false;
+        if (strict) {
+          return false;
+        }
+
+        continue;
       }
+
+      anyMatch = true;
     }
 
-    return true;
+    return anyMatch;
   };
 }
 
