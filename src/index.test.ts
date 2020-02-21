@@ -60,6 +60,11 @@ it.each([
     { test: 123, other: 321 },
     IsDictionary(IsNumber)
   ],
+  [
+    "IsDictionary of string",
+    { test: "123", other: "321" },
+    IsDictionary(IsString)
+  ],
   ["Optional", undefined, Optional(IsNumber)],
   ["DotNotCare on string", "test", DoNotCare],
   ["DoNotCare on date", Date.UTC(2000, 1, 1), DoNotCare]
