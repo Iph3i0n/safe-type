@@ -48,6 +48,14 @@ it.each([
     IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString }))
   ],
   [
+    "IsIntersection with dictionary of objects and null other item",
+    { test: { id: 1 }, other: null },
+    IsIntersection(
+      IsDictionary(IsObject({ id: IsNumber })),
+      IsObject({ other: Optional(IsString) })
+    )
+  ],
+  [
     "IsDictionary of numbers",
     { test: 123, other: 321 },
     IsDictionary(IsNumber)

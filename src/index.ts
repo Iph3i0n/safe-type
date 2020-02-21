@@ -156,7 +156,7 @@ export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
         return false;
       }
 
-      if (!c(arg[key], true)) {
+      if (!arg[key] || !c(arg[key], true)) {
         if (strict) {
           return false;
         }
