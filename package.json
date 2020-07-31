@@ -1,34 +1,35 @@
 {
   "name": "@paulpopat/safe-type",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "JavaScript type safety with inference",
   "main": "lib/index.js",
   "scripts": {
     "build": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PaulPopat/safe-type.git"
   },
   "author": "Paul Popat",
-  "license": "GPL-3.0-or-later",
+  "license": "ICS",
   "bugs": {
     "url": "https://github.com/PaulPopat/safe-type/issues"
   },
   "homepage": "https://github.com/PaulPopat/safe-type#readme",
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.4.0",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
-    "@babel/preset-env": "^7.4.1",
-    "@babel/preset-typescript": "^7.3.3",
-    "@types/jest": "^24.0.18",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.3.3"
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.0",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.8",
+    "jest": "^26.2.1",
+    "ts-jest": "^26.1.4",
+    "typescript": "^3.9.7"
   }
 }

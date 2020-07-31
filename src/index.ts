@@ -83,7 +83,7 @@ export function IsUnion<T1, T2, T3, T4, T5>(
 ): Checker<T1 | T2 | T3 | T4 | T5>;
 export function IsUnion(...checkers: Checker<any>[]): Checker<any> {
   return (arg): arg is IsType<typeof checkers[number]> =>
-    checkers.filter(c => c(arg, true)).length > 0;
+    checkers.filter((c) => c(arg, true)).length > 0;
 }
 
 export function IsIntersection<T1>(c1: Checker<T1>): Checker<T1>;
@@ -111,7 +111,7 @@ export function IsIntersection<T1, T2, T3, T4, T5>(
 ): Checker<T1 & T2 & T3 & T4 & T5>;
 export function IsIntersection(...checkers: Checker<any>[]): Checker<any> {
   return (arg): arg is IsType<typeof checkers[number]> =>
-    checkers.filter(c => c(arg, false)).length === checkers.length;
+    checkers.filter((c) => c(arg, false)).length === checkers.length;
 }
 
 export function IsObject<T extends CheckerObject>(
@@ -179,4 +179,16 @@ export function Optional<T>(c: Checker<T>): Checker<T | null | undefined> {
 
 export function DoNotCare(arg: any): arg is unknown {
   return true;
+}
+
+export function Assert<T>(
+  checker: Checker<T>,
+  subject: any,
+  message?: string
+): asserts subject is T {
+  if (!checker(subject)) {
+    throw new Error(
+      message ? message : "Invalid type of " + JSON.stringify(subject)
+    );
+  }
 }

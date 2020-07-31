@@ -12,7 +12,8 @@ import {
   IsIntersection,
   IsDictionary,
   Optional,
-  DoNotCare
+  DoNotCare,
+  Assert
 } from ".";
 
 // For now, we cannot test bigint as jest does not support it
@@ -122,3 +123,7 @@ it.each([
     expect(checker(data)).toBe(false);
   }
 );
+
+it("Throws error for assert", () => {
+  expect(() => Assert(IsString, 123)).toThrowError();
+});
