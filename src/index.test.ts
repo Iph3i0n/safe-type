@@ -127,3 +127,11 @@ it.each([
 it("Throws error for assert", () => {
   expect(() => Assert(IsString, 123)).toThrowError();
 });
+
+it("Does not throw if correct type", () => {
+  expect(() => Assert(IsString, "123")).not.toThrowError();
+});
+
+it("Does not throw if correct type deep", () => {
+  expect(() => Assert(IsObject({ parameter: IsString }), { parameter: "test" })).not.toThrowError();
+});
