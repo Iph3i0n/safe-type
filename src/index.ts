@@ -58,59 +58,31 @@ export function IsArray<T>(checker: Checker<T>): Checker<T[]> {
   };
 }
 
-export function IsUnion<T1>(c1: Checker<T1>): Checker<T1>;
-export function IsUnion<T1, T2>(
-  c1: Checker<T1>,
-  c2: Checker<T2>
-): Checker<T1 | T2>;
-export function IsUnion<T1, T2, T3>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>
-): Checker<T1 | T2 | T3>;
-export function IsUnion<T1, T2, T3, T4>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>
-): Checker<T1 | T2 | T3 | T4>;
-export function IsUnion<T1, T2, T3, T4, T5>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>,
-  c5: Checker<T5>
-): Checker<T1 | T2 | T3 | T4 | T5>;
-export function IsUnion(...checkers: Checker<any>[]): Checker<any> {
-  return (arg): arg is IsType<typeof checkers[number]> =>
+export function IsTuple<T extends any[]>(
+  ...checkers: { [K in keyof T]: Checker<T[K]> }
+) {
+  return (arg: any): arg is T => {
+    return checkers.find((v, i) => !v(arg[i])) == null;
+  };
+}
+
+export function IsUnion<T extends any[]>(
+  ...checkers: { [K in keyof T]: Checker<T[K]> }
+) {
+  return (arg: any): arg is T[number] =>
     checkers.filter((c) => c(arg, true)).length > 0;
 }
 
-export function IsIntersection<T1>(c1: Checker<T1>): Checker<T1>;
-export function IsIntersection<T1, T2>(
-  c1: Checker<T1>,
-  c2: Checker<T2>
-): Checker<T1 & T2>;
-export function IsIntersection<T1, T2, T3>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>
-): Checker<T1 & T2 & T3>;
-export function IsIntersection<T1, T2, T3, T4>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>
-): Checker<T1 & T2 & T3 & T4>;
-export function IsIntersection<T1, T2, T3, T4, T5>(
-  c1: Checker<T1>,
-  c2: Checker<T2>,
-  c3: Checker<T3>,
-  c4: Checker<T4>,
-  c5: Checker<T5>
-): Checker<T1 & T2 & T3 & T4 & T5>;
-export function IsIntersection(...checkers: Checker<any>[]): Checker<any> {
-  return (arg): arg is IsType<typeof checkers[number]> =>
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+  k: infer I
+) => void
+  ? I
+  : never;
+
+export function IsIntersection<T extends any[]>(
+  ...checkers: { [K in keyof T]: Checker<T[K]> }
+) {
+  return (arg: any): arg is UnionToIntersection<T[number]> =>
     checkers.filter((c) => c(arg, false)).length === checkers.length;
 }
 

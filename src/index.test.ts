@@ -13,7 +13,8 @@ import {
   IsDictionary,
   Optional,
   DoNotCare,
-  Assert
+  Assert,
+  IsTuple,
 } from ".";
 
 // For now, we cannot test bigint as jest does not support it
@@ -30,23 +31,23 @@ it.each([
   [
     "IsUnion of Test or 123 p1",
     "Test",
-    IsUnion(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123)),
   ],
   [
     "IsUnion of Test or 123 p2",
     123,
-    IsUnion(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123)),
   ],
   ["IsObject with number", { test: 123 }, IsObject({ test: IsNumber })],
   [
     "IsIntersection",
     { test: 123, other: "test" },
-    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
+    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString })),
   ],
   [
     "IsIntersection with dictionary",
     { test: 123, other: "test" },
-    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString }))
+    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString })),
   ],
   [
     "IsIntersection with dictionary of objects and null other item",
@@ -54,21 +55,22 @@ it.each([
     IsIntersection(
       IsDictionary(IsObject({ id: IsNumber })),
       IsObject({ other: Optional(IsString) })
-    )
+    ),
   ],
   [
     "IsDictionary of numbers",
     { test: 123, other: 321 },
-    IsDictionary(IsNumber)
+    IsDictionary(IsNumber),
   ],
   [
     "IsDictionary of string",
     { test: "123", other: "321" },
-    IsDictionary(IsString)
+    IsDictionary(IsString),
   ],
   ["Optional", undefined, Optional(IsNumber)],
   ["DotNotCare on string", "test", DoNotCare],
-  ["DoNotCare on date", Date.UTC(2000, 1, 1), DoNotCare]
+  ["DoNotCare on date", Date.UTC(2000, 1, 1), DoNotCare],
+  ["Tuple", ["test", 123], IsTuple(IsString, IsNumber)],
 ])(
   "Correctly assignes to true for %s",
   (name: string, data: any, checker: any) => {
@@ -89,34 +91,35 @@ it.each([
   [
     "IsUnion of Test or 123 p1",
     "Not a test",
-    IsUnion(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123)),
   ],
   [
     "IsUnion of Test or 123 p2",
     321,
-    IsUnion(IsLiteral("Test"), IsLiteral(123))
+    IsUnion(IsLiteral("Test"), IsLiteral(123)),
   ],
   [
     "IsObject with number",
     { test: "test string" },
-    IsObject({ test: IsNumber })
+    IsObject({ test: IsNumber }),
   ],
   [
     "IsIntersection",
     { test: "test string", other: 123 },
-    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString }))
+    IsIntersection(IsObject({ test: IsNumber }), IsObject({ other: IsString })),
   ],
   [
     "IsIntersection with dictionary",
     { other: "test" },
-    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString }))
+    IsIntersection(IsDictionary(IsNumber), IsObject({ other: IsString })),
   ],
   [
     "IsDictionary of numbers",
     { test: "123", other: 321 },
-    IsDictionary(IsNumber)
+    IsDictionary(IsNumber),
   ],
-  ["Optional", false, Optional(IsNumber)]
+  ["Optional", false, Optional(IsNumber)],
+  ["Tuple", [123, "test"], IsTuple(IsString, IsNumber)],
 ])(
   "Correctly assignes to false for %s",
   (name: string, data: any, checker: any) => {
@@ -133,5 +136,7 @@ it("Does not throw if correct type", () => {
 });
 
 it("Does not throw if correct type deep", () => {
-  expect(() => Assert(IsObject({ parameter: IsString }), { parameter: "test" })).not.toThrowError();
+  expect(() =>
+    Assert(IsObject({ parameter: IsString }), { parameter: "test" })
+  ).not.toThrowError();
 });
