@@ -71,6 +71,8 @@ it.each([
   ["DotNotCare on string", "test", DoNotCare],
   ["DoNotCare on date", Date.UTC(2000, 1, 1), DoNotCare],
   ["Tuple", ["test", 123], IsTuple(IsString, IsNumber)],
+  ["Tuple or numbers", [1, 2], IsTuple(IsNumber, IsNumber)],
+  ["Array of tuple or numbers", [[1, 2]], IsArray(IsTuple(IsNumber, IsNumber))],
 ])(
   "Correctly assignes to true for %s",
   (name: string, data: any, checker: any) => {
