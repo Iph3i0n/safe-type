@@ -15,9 +15,8 @@ import {
   DoNotCare,
   Assert,
   IsTuple,
-} from ".";
+} from "./mod.ts";
 
-// For now, we cannot test bigint as jest does not support it
 it.each([
   ["IsString", "test string" as any, IsString as any],
   ["IsNumber", 123, IsNumber],
