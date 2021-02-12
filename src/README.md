@@ -5,7 +5,7 @@ This used to be a NPM module but I am attempting to switch to [Deno](https://den
 ## Usage
 
 ```TypeScript
-import { Assert, IsObject, IsString, IsType, Checker } from "https://deno.land/x/safe_type@2.2.0/mod.ts";
+import { Assert, IsObject, IsString, IsType, Checker } from "https://deno.land/x/safe_type@2.2.1/mod.ts";
 
 function Thing(argument: unknown) {
   Assert(argument, IsString);
