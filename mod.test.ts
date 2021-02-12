@@ -1,4 +1,8 @@
 import {
+  assertEquals,
+  assertThrows,
+} from "https://deno.land/std@0.86.0/testing/asserts.ts";
+import {
   IsString,
   IsNumber,
   IsSymbol,
@@ -17,7 +21,7 @@ import {
   IsTuple,
 } from "./mod.ts";
 
-it.each([
+for (const [name, data, checker] of [
   ["IsString", "test string" as any, IsString as any],
   ["IsNumber", 123, IsNumber],
   ["IsSymbol", Symbol(123), IsSymbol],
@@ -72,14 +76,13 @@ it.each([
   ["Tuple", ["test", 123], IsTuple(IsString, IsNumber)],
   ["Tuple or numbers", [1, 2], IsTuple(IsNumber, IsNumber)],
   ["Array of tuple or numbers", [[1, 2]], IsArray(IsTuple(IsNumber, IsNumber))],
-])(
-  "Correctly assignes to true for %s",
-  (name: string, data: any, checker: any) => {
-    expect(checker(data)).toBe(true);
-  }
-);
+]) {
+  Deno.test(`Correctly assignes to true for ${name}`, () => {
+    assertEquals(checker(data), true);
+  });
+}
 
-it.each([
+for (const [name, data, checker] of [
   ["IsString", 123 as any, IsString as any],
   ["IsNumber", "test string", IsNumber],
   ["IsSymbol", 123, IsSymbol],
@@ -121,23 +124,20 @@ it.each([
   ],
   ["Optional", false, Optional(IsNumber)],
   ["Tuple", [123, "test"], IsTuple(IsString, IsNumber)],
-])(
-  "Correctly assignes to false for %s",
-  (name: string, data: any, checker: any) => {
-    expect(checker(data)).toBe(false);
-  }
-);
+]) {
+  Deno.test(`Correctly assignes to false for ${name}`, () => {
+    assertEquals(checker(data), false);
+  });
+}
 
-it("Throws error for assert", () => {
-  expect(() => Assert(IsString, 123)).toThrowError();
+Deno.test("Throws error for assert", () => {
+  assertThrows(() => Assert(IsString, 123));
 });
 
-it("Does not throw if correct type", () => {
-  expect(() => Assert(IsString, "123")).not.toThrowError();
+Deno.test("Does not throw if correct type", () => {
+  Assert(IsString, "123");
 });
 
-it("Does not throw if correct type deep", () => {
-  expect(() =>
-    Assert(IsObject({ parameter: IsString }), { parameter: "test" })
-  ).not.toThrowError();
+Deno.test("Does not throw if correct type deep", () => {
+  Assert(IsObject({ parameter: IsString }), { parameter: "test" });
 });
