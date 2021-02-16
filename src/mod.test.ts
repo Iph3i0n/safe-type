@@ -76,6 +76,7 @@ for (const [name, data, checker] of [
   ["Tuple", ["test", 123], IsTuple(IsString, IsNumber)],
   ["Tuple or numbers", [1, 2], IsTuple(IsNumber, IsNumber)],
   ["Array of tuple or numbers", [[1, 2]], IsArray(IsTuple(IsNumber, IsNumber))],
+  ["An empty dictionary", {}, IsDictionary(IsString)],
 ]) {
   Deno.test(`Correctly assignes to true for ${name}`, () => {
     assertEquals(checker(data), true);
