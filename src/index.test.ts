@@ -15,6 +15,7 @@ import {
   DoNotCare,
   Assert,
   IsTuple,
+  PatternMatch,
 } from "./index";
 
 for (const [name, data, checker] of [
@@ -138,4 +139,24 @@ it("Does not throw if correct type", () => {
 
 it("Does not throw if correct type deep", () => {
   Assert(IsObject({ parameter: IsString }), { parameter: "test" });
+});
+
+it("Matches on pattern", () => {
+  expect(
+    PatternMatch(IsString, IsNumber, IsBoolean)(
+      (s) => s + "string",
+      (n) => n + "number",
+      (b) => b + "boolean"
+    )("test")
+  ).toBe("teststring");
+});
+
+it("Matches on other pattern", () => {
+  expect(
+    PatternMatch(IsString, IsNumber, IsBoolean)(
+      (s) => s + "string",
+      (n) => n + "number",
+      (b) => b + "boolean"
+    )(123)
+  ).toBe("123number");
 });

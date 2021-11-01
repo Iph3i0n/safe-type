@@ -171,3 +171,21 @@ export function Assert<T>(
     );
   }
 }
+
+export function PatternMatch<T extends any[]>(
+  ...checkers: { [K in keyof T]: Checker<T[K]> }
+) {
+  return <TResult>(
+    ...handlers: { [K in keyof T]: (item: T[K]) => TResult }
+  ) => {
+    return (item: T[number]) => {
+      for (let i = 0; i < handlers.length; i++) {
+        if (checkers[i](item)) {
+          return handlers[i](item);
+        }
+      }
+
+      throw new Error("No matching pattern for " + JSON.stringify(item));
+    };
+  };
+}
