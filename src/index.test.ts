@@ -1,8 +1,4 @@
 import {
-  assertEquals,
-  assertThrows,
-} from "https://deno.land/std@0.86.0/testing/asserts.ts";
-import {
   IsString,
   IsNumber,
   IsSymbol,
@@ -19,7 +15,7 @@ import {
   DoNotCare,
   Assert,
   IsTuple,
-} from "./mod.ts";
+} from "./index";
 
 for (const [name, data, checker] of [
   ["IsString", "test string" as any, IsString as any],
@@ -79,8 +75,8 @@ for (const [name, data, checker] of [
   ["An empty dictionary", {}, IsDictionary(IsString)],
   ["An empty string in a dictionary", { test: "" }, IsDictionary(IsString)],
 ]) {
-  Deno.test(`Correctly assignes to true for ${name}`, () => {
-    assertEquals(checker(data), true);
+  it(`Correctly assignes to true for ${name}`, () => {
+    expect(checker(data)).toBe(true);
   });
 }
 
@@ -127,19 +123,19 @@ for (const [name, data, checker] of [
   ["Optional", false, Optional(IsNumber)],
   ["Tuple", [123, "test"], IsTuple(IsString, IsNumber)],
 ]) {
-  Deno.test(`Correctly assignes to false for ${name}`, () => {
-    assertEquals(checker(data), false);
+  it(`Correctly assignes to false for ${name}`, () => {
+    expect(checker(data)).toBe(false);
   });
 }
 
-Deno.test("Throws error for assert", () => {
-  assertThrows(() => Assert(IsString, 123));
+it("Throws error for assert", () => {
+  expect(() => Assert(IsString, 123)).toThrow();
 });
 
-Deno.test("Does not throw if correct type", () => {
+it("Does not throw if correct type", () => {
   Assert(IsString, "123");
 });
 
-Deno.test("Does not throw if correct type deep", () => {
+it("Does not throw if correct type deep", () => {
   Assert(IsObject({ parameter: IsString }), { parameter: "test" });
 });

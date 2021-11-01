@@ -1,8 +1,9 @@
 {
-    "files.exclude": {
-        "node_modules": true
-    },
-    "typescript.tsdk": "node_modules\\typescript\\lib",
-    "deno.enable": true,
-    "deno.unstable": true
+  "files.exclude": {
+    "node_modules": true,
+    ".vscode": true,
+    "dist": true,
+    ".gitignore": true,
+    "package-lock.json": true
+  }
 }
