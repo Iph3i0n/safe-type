@@ -172,13 +172,13 @@ export function Assert<T>(
   }
 }
 
+type TupleResult<T extends any[]> = { [K in keyof T]: (item: T[K]) => any };
+
 export function PatternMatch<T extends any[]>(
   ...checkers: { [K in keyof T]: Checker<T[K]> }
 ) {
-  return <TResult>(
-    ...handlers: { [K in keyof T]: (item: T[K]) => TResult }
-  ) => {
-    return (item: T[number]) => {
+  return <TResult extends TupleResult<T>>(...handlers: TResult) => {
+    return (item: T[number]): ReturnType<TResult[number]> => {
       for (let i = 0; i < handlers.length; i++) {
         if (checkers[i](item)) {
           return handlers[i](item);

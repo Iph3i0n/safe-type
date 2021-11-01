@@ -1,6 +1,6 @@
 {
   "name": "@paulpopat/safe-type",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Typesafety with strong inference",
   "main": "dist/index.js",
   "scripts": {

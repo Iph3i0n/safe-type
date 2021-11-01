@@ -142,13 +142,13 @@ it("Does not throw if correct type deep", () => {
 });
 
 it("Matches on pattern", () => {
-  expect(
-    PatternMatch(IsString, IsNumber, IsBoolean)(
-      (s) => s + "string",
-      (n) => n + "number",
-      (b) => b + "boolean"
-    )("test")
-  ).toBe("teststring");
+  const pattern = PatternMatch(IsString, IsNumber, IsBoolean);
+  const matcher = pattern(
+    (s) => s + "string",
+    (n) => n + "number",
+    (b) => b + "boolean"
+  );
+  expect(matcher("test")).toBe("teststring");
 });
 
 it("Matches on other pattern", () => {
