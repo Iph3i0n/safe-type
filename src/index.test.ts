@@ -123,6 +123,7 @@ for (const [name, data, checker] of [
   ],
   ["Optional", false, Optional(IsNumber)],
   ["Tuple", [123, "test"], IsTuple(IsString, IsNumber)],
+  ["Tuple", ["test", 123, "another"], IsTuple(IsString, IsNumber)],
 ]) {
   it(`Correctly assignes to false for ${name}`, () => {
     expect(checker(data)).toBe(false);

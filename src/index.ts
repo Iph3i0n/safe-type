@@ -62,6 +62,8 @@ export function IsTuple<T extends any[]>(
   ...checkers: { [K in keyof T]: Checker<T[K]> }
 ) {
   return (arg: any): arg is T => {
+    if (!Array.isArray(arg)) return false;
+    if (arg.length !== checkers.length) return false;
     return checkers.find((v, i) => !v(arg[i])) == null;
   };
 }
