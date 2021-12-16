@@ -71,20 +71,18 @@ export function IsTuple<T extends any[]>(
 export function IsUnion<T extends any[]>(
   ...checkers: { [K in keyof T]: Checker<T[K]> }
 ) {
-  return (arg: any): arg is T[number] =>
-    checkers.filter((c) => c(arg, true)).length > 0;
+  return (arg: any, strict: boolean = true): arg is T[number] =>
+    checkers.filter((c) => c(arg, strict)).length > 0;
 }
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-  k: infer I
-) => void
-  ? I
-  : never;
+type UnionToIntersection<T extends any[]> = T extends [infer F, ...infer R]
+  ? F & UnionToIntersection<R>
+  : unknown;
 
 export function IsIntersection<T extends any[]>(
   ...checkers: { [K in keyof T]: Checker<T[K]> }
 ) {
-  return (arg: any): arg is UnionToIntersection<T[number]> =>
+  return (arg: any): arg is UnionToIntersection<T> =>
     checkers.filter((c) => c(arg, false)).length === checkers.length;
 }
 

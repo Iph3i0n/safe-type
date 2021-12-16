@@ -161,3 +161,22 @@ it("Matches on other pattern", () => {
     )(123)
   ).toBe("123number");
 });
+
+it("Matches on an intersection of unions", () => {
+  const checker = IsIntersection(
+    IsObject({
+      thing: IsString,
+    }),
+    IsUnion(
+      IsObject({ test: IsString }),
+      IsIntersection(
+        IsObject({ test: IsString }),
+        IsObject({ other: IsString })
+      )
+    )
+  );
+  expect(checker({ thing: "test", test: "other", other: "test" })).toBe(true);
+  expect(checker({ thing: "test", test: "other" })).toBe(true);
+  expect(checker({ thing: "test" })).toBe(false);
+  expect(checker({ test: "other" })).toBe(false);
+});
