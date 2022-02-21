@@ -16,6 +16,7 @@ import {
   Assert,
   IsTuple,
   PatternMatch,
+  IsRecord,
 } from "./index";
 
 for (const [name, data, checker] of [
@@ -75,6 +76,17 @@ for (const [name, data, checker] of [
   ["Array of tuple or numbers", [[1, 2]], IsArray(IsTuple(IsNumber, IsNumber))],
   ["An empty dictionary", {}, IsDictionary(IsString)],
   ["An empty string in a dictionary", { test: "" }, IsDictionary(IsString)],
+  ["An empty record", {}, IsRecord(IsString, IsString)],
+  [
+    "A record of strings",
+    { "1": "test", "2": "test" },
+    IsRecord(IsString, IsString),
+  ],
+  [
+    "A record of literals",
+    { t1: "test", t2: "test" },
+    IsRecord(IsUnion(IsLiteral("t1"), IsLiteral("t2")), IsString),
+  ],
 ]) {
   it(`Correctly assignes to true for ${name}`, () => {
     expect(checker(data)).toBe(true);
@@ -124,6 +136,11 @@ for (const [name, data, checker] of [
   ["Optional", false, Optional(IsNumber)],
   ["Tuple", [123, "test"], IsTuple(IsString, IsNumber)],
   ["Tuple", ["test", 123, "another"], IsTuple(IsString, IsNumber)],
+  [
+    "A record of literals",
+    { t1: "test", wrong_test: "test" },
+    IsRecord(IsUnion(IsLiteral("t1"), IsLiteral("t2")), IsString),
+  ],
 ]) {
   it(`Correctly assignes to false for ${name}`, () => {
     expect(checker(data)).toBe(false);

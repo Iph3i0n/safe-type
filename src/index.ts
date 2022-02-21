@@ -116,39 +116,34 @@ export function IsObject<T extends CheckerObject>(
   }) as ObjectChecker<T>;
 }
 
-export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
-  return (arg: any, strict: boolean = true): arg is { [key: string]: T } => {
-    if (strict) {
-      return (
-        Object.keys(arg).find((k) => {
-          if (!arg.hasOwnProperty(k)) {
-            return false;
-          }
+export function IsRecord<TKey extends string | symbol, T>(
+  keys: Checker<TKey>,
+  c: Checker<T>
+): Checker<Record<TKey, T>> {
+  return (arg: any, strict: boolean = true): arg is Record<TKey, T> => {
+    const checker = strict
+      ? (a: any) => a == null || !c(a, true)
+      : (a: any) => a != null && c(a, true);
 
-          if (!IsString(k)) {
-            return false;
-          }
+    const res = Object.keys(arg).find((k) => {
+      if (!arg.hasOwnProperty(k)) {
+        return false;
+      }
 
-          return arg[k] == null || !c(arg[k], true);
-        }) == null
-      );
-    }
+      if (!keys(k)) {
+        return true;
+      }
 
-    return (
-      Object.keys(arg).find((k) => {
-        if (!arg.hasOwnProperty(k)) {
-          return false;
-        }
-
-        if (!IsString(k)) {
-          return false;
-        }
-
-        return arg[k] != null && c(arg[k], true);
-      }) != null
-    );
+      return checker(arg[k]);
+    });
+    return strict ? res == null : res != null;
   };
 }
+
+export function IsDictionary<T>(c: Checker<T>): Checker<{ [key: string]: T }> {
+  return IsRecord(IsString, c);
+}
+
 
 export function Optional<T>(c: Checker<T>): Checker<T | null | undefined> {
   return (arg: any): arg is T | null | undefined => {
