@@ -141,6 +141,18 @@ for (const [name, data, checker] of [
     { t1: "test", wrong_test: "test" },
     IsRecord(IsUnion(IsLiteral("t1"), IsLiteral("t2")), IsString),
   ],
+  [
+    "A deep object",
+    {},
+    IsObject({
+      "@": IsObject({
+        "@_attr": IsUnion(
+          IsObject({ on: IsString }),
+          IsObject({ trigger: IsString, selector: IsString })
+        ),
+      }),
+    }),
+  ],
 ]) {
   it(`Correctly assignes to false for ${name}`, () => {
     expect(checker(data)).toBe(false);

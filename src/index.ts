@@ -90,6 +90,8 @@ export function IsObject<T extends CheckerObject>(
   checker: T
 ): ObjectChecker<T> {
   return ((arg: any, strict: boolean = true) => {
+    if (!arg) return false;
+
     for (const key in checker) {
       if (!checker.hasOwnProperty(key)) {
         continue;
