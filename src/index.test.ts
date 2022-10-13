@@ -87,6 +87,11 @@ for (const [name, data, checker] of [
     { t1: "test", t2: "test" },
     IsRecord(IsUnion(IsLiteral("t1"), IsLiteral("t2")), IsString),
   ],
+  [
+    "A record of string and null",
+    { part1: null },
+    IsRecord(IsString, DoNotCare),
+  ],
 ]) {
   it(`Correctly assignes to true for ${name}`, () => {
     expect(checker(data)).toBe(true);
