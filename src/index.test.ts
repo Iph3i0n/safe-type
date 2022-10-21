@@ -17,6 +17,7 @@ import {
   IsTuple,
   PatternMatch,
   IsRecord,
+  IsIterable,
 } from "./index";
 
 for (const [name, data, checker] of [
@@ -91,6 +92,15 @@ for (const [name, data, checker] of [
     "A record of string and null",
     { part1: null },
     IsRecord(IsString, DoNotCare),
+  ],
+  [
+    "An iterable",
+    (function* () {
+      yield 1;
+      yield 2;
+      yield 3;
+    })(),
+    IsIterable(IsNumber),
   ],
 ]) {
   it(`Correctly assignes to true for ${name}`, () => {

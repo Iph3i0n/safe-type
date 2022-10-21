@@ -60,6 +60,25 @@ export function IsArray<T>(checker: Checker<T>): Checker<T[]> {
   };
 }
 
+export function IsIterable<T extends unknown>(
+  checker: Checker<T>
+): Checker<Iterable<T>> {
+  return (arg): arg is Iterable<T> => {
+    if (!arg) return false;
+    if (typeof arg !== "object") return false;
+
+    if (!(arg as any)[Symbol.iterator]) {
+      return false;
+    }
+
+    for (const part of arg as Iterable<unknown>) {
+      if (!checker(part, true)) return false;
+    }
+
+    return true;
+  };
+}
+
 export function IsTuple<T extends unknown[]>(...checkers: Checkerify<T>) {
   return (arg: unknown): arg is T => {
     if (!Array.isArray(arg)) return false;
