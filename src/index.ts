@@ -124,11 +124,8 @@ export function IsObject<T extends CheckerObject>(
     if (!arg || typeof arg !== "object") return false;
 
     for (const key in checker) {
-      if (!IsKeyOf(arg, key)) {
-        return false;
-      }
-
-      if (!checker[key](arg[key], true)) {
+      if (!IsKeyOf(checker, key)) continue;
+      if (!checker[key]((arg as any)[key], true)) {
         return false;
       }
     }
@@ -158,7 +155,7 @@ export function IsRecord<TKey extends string | symbol, T>(
     let any_match = false;
 
     const is_match = (key: string) =>
-      keys(key) && IsKeyOf(arg, key) && checker(arg[key]);
+      keys(key) && IsKeyOf(arg as any, key) && checker((arg as any)[key]);
 
     for (const key in arg ?? {})
       if (strict && !is_match(key)) return false;

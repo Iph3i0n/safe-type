@@ -41,6 +41,7 @@ for (const [name, data, checker] of [
     IsUnion(IsLiteral("Test"), IsLiteral(123)),
   ],
   ["IsObject with number", { test: 123 }, IsObject({ test: IsNumber })],
+  ["IsObject with optional number", {}, IsObject({ test: Optional(IsNumber) })],
   [
     "IsIntersection",
     { test: 123, other: "test" },
