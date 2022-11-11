@@ -18,7 +18,14 @@ import {
   PatternMatch,
   IsRecord,
   IsIterable,
+  IsInstanceOf,
 } from "./index";
+
+class BaseTest {}
+
+class Test1 extends BaseTest {}
+
+class Test2 extends BaseTest {}
 
 for (const [name, data, checker] of [
   ["IsString", "test string" as any, IsString as any],
@@ -103,6 +110,8 @@ for (const [name, data, checker] of [
     })(),
     IsIterable(IsNumber),
   ],
+  ["A class instance", new Test1(), IsInstanceOf(Test1)],
+  ["An inherited class", new Test2(), IsInstanceOf(BaseTest)],
 ]) {
   it(`Correctly assignes to true for ${name}`, () => {
     expect(checker(data)).toBe(true);
@@ -169,6 +178,7 @@ for (const [name, data, checker] of [
       }),
     }),
   ],
+  ["An incorrect instance of class", new Test2(), IsInstanceOf(Test1)],
 ]) {
   it(`Correctly assignes to false for ${name}`, () => {
     expect(checker(data)).toBe(false);
