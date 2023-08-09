@@ -19,7 +19,7 @@ import {
   IsRecord,
   IsIterable,
   IsInstanceOf,
-} from "./index";
+} from "./mod";
 
 class BaseTest {}
 

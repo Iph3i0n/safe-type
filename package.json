@@ -1,8 +1,9 @@
 {
-  "name": "@paulpopat/safe-type",
+  "name": "@paulthomastaylor/safe-type",
   "version": "2.2.1",
   "description": "Typesafety with strong inference",
-  "main": "dist/index.js",
+  "main": "dist/mod.js",
+  "types": "dist/mod.d.ts",
   "scripts": {
     "prepublish": "npm run test && tsc --declaration",
     "test": "jest"
@@ -25,9 +26,9 @@
   },
   "homepage": "https://github.com/PaulPopat/safe-type#readme",
   "devDependencies": {
-    "@types/jest": "^29.1.2",
-    "jest": "^29.1.2",
-    "ts-jest": "^29.0.3",
-    "typescript": "^4.8.4"
+    "@types/jest": "^29.5.3",
+    "jest": "^29.6.2",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.1.6"
   }
 }
