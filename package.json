@@ -1,5 +1,5 @@
 {
-  "name": "@paulthomastaylor/safe-type",
+  "name": "@ipheion/safe-type",
   "version": "2.2.1",
   "description": "Typesafety with strong inference",
   "main": "dist/mod.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PaulPopat/safe-type.git"
+    "url": "git+https://github.com/Iph3i0n/safe-type.git"
   },
   "keywords": [
     "safe-type",
@@ -22,9 +22,9 @@
   "author": "paulpopat",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PaulPopat/safe-type/issues"
+    "url": "https://github.com/Iph3i0n/safe-type/issues"
   },
-  "homepage": "https://github.com/PaulPopat/safe-type#readme",
+  "homepage": "https://github.com/Iph3i0n/safe-type#readme",
   "devDependencies": {
     "@types/jest": "^29.5.3",
     "jest": "^29.6.2",
